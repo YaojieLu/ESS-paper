@@ -13,8 +13,8 @@ plot(0, 0, type="n",
 curve(0.49*x-0.42, -7, -1, lty=1, add=T, lwd=1)
 
 points(subset(dataDVSIII, d<11, select=c("P50", "pxgs50")), type="l", col=Cols[3])
-points(subset(dataDVSI, h3==1 & d<11, select=c("P50", "pxgs50")), type="l", col=Cols[1])
-points(subset(dataDVSI, h3==100 & d<11, select=c("P50", "pxgs50")), type="l", lty=2, col=Cols[1])
+points(subset(dataDVSI, LAI==3 & h3==1 & d<11, select=c("P50", "pxgs50")), type="l", col=Cols[1])
+points(subset(dataDVSI, LAI==3 & h3==100 & d<11, select=c("P50", "pxgs50")), type="l", lty=2, col=Cols[1])
 #points(subset(dataDVSII, h3==1, select=c("P50", "pxgs50"), type="p"))
 ## V
 #points(subset(dataDVSV, select=c("P50", "pxgs50")), type="l", col="blue")

@@ -29,8 +29,8 @@ points(dataGym, type="p", col=Colsd[2], pch=2, lwd=1)
 lines(dataGym$Psi50, predict(fitGym), col=Colsd[2], lwd=1)
 
 points(subset(dataDVSIII, d<11, select=c("P50", "pxmin")), type="l", , col=Cols[3])
-points(subset(dataDVSI, h3==1 & d<11, select=c("P50", "pxmin")), type="l", , col=Cols[1])
-points(subset(dataDVSI, h3==100 & d<11, select=c("P50", "pxmin")), type="l", lty=2, , col=Cols[1])
+points(subset(dataDVSI, LAI==3 & h3==1 & d<11, select=c("P50", "pxmin")), type="l", , col=Cols[1])
+points(subset(dataDVSI, LAI==3 & h3==100 & d<11, select=c("P50", "pxmin")), type="l", lty=2, , col=Cols[1])
 #points(subset(dataDVSII, h3==25, select=c("P50", "pxmin")), type="p")
 ## V
 #points(subset(dataDVSV, select=c("P50", "pxmin")), type="l", col="blue")

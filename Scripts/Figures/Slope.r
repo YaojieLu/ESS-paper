@@ -19,10 +19,10 @@ plot(datab$P50, datab$sigma,
 
 lines(datab$P50, predict(fit), lwd=1)
 
-points(subset(dataDVSI, h3==100 & d<11, select=c("P50", "slope")), type="l", col=Cols[1], lty=2)
+points(subset(dataDVSI, LAI==3 & h3==100 & d<11, select=c("P50", "slope")), type="l", col=Cols[1], lty=2)
 #points(subset(dataDVSII, h3==100,select=c("P50", "slope")), type="l", col=Cols[2], lty=2)
-segments(subset(dataDVSI, h3==100 & d==1, select=c("P50"))[[1]], 0,
-         subset(dataDVSI, h3==100 & d==10, select=c("P50"))[[1]], 0, col=Cols[3])
+segments(subset(dataDVSI, LAI==3 & h3==100 & d==1, select=c("P50"))[[1]], 0,
+         subset(dataDVSI, LAI==3 & h3==100 & d==10, select=c("P50"))[[1]], 0, col=Cols[3])
 ## V
 #points(subset(dataDVSV, select=c("P50", "slope")), type="l", col="blue")
 
