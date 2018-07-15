@@ -15,5 +15,4 @@ Under **"Scripts/Derived variables/"**:
 **"/g1/"** contains all the R code used to predict the relationship between *g*<sub>1</sub> and &#936;<sub>s</sub>.  
 **"/gs/"** contains all the R code used to predict the relationship between *g*<sub>s</sub> and *s*  
 **"/gs-px-ps-s/"** contains all the R code used to predict the relationship between *g*<sub>1</sub>, &#936;<sub>x</sub>, &#936;<sub>s</sub>, and *s*  
-**"SXX-F.r"**<sup>*</sup> contains all the functions for the corresponding scenarios.  
-**"SI" stands for "Scenario I" and so on, for each of the "SXX-" prefix.*  
+**"SXX-F.r"** contains all the functions for the corresponding scenarios. (*"SI" stands for "Scenario I" and so on, for each of the "SXX-" prefix.)  
