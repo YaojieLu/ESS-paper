@@ -17,7 +17,6 @@ pe <- -1.58*10^-3
 b <- 4.38
 kxmax <- 5
 c <- 2.64
-#d <- 3.54
 h <- l*a*LAI/nZ*p
 h2 <- l*LAI/nZ*p/1000
 
@@ -26,12 +25,13 @@ ca <- 400
 k <- 0.05
 MAP <- 1825
 gamma <- 1/((MAP/365/k)/1000)*nZ
+
+# d
+d <- 5
+
 # Low
 h3 <- 1
-d <- 4
 
-#data <- read.csv("Results/SI-DV.csv")
-#wL <- subset(data, h3==25 & d==5, select="wL")[[1]]
 wL <- uniroot(ESSBf, c(0.01, 1), tol=.Machine$double.eps)$root
 pxL <- psf(wL)
 xg1 <- seq(pxL, psf(1), by=(psf(1)-pxL)/100)
@@ -44,10 +44,7 @@ write.csv(resg1, "Results/SI-g1L.csv", row.names = FALSE)
 
 # High
 h3 <- 100
-d <- 4
 
-#data <- read.csv("Results/SI-DV.csv")
-#wL <- subset(data, h3==25 & d==5, select="wL")[[1]]
 wL <- uniroot(ESSBf, c(0.01, 1), tol=.Machine$double.eps)$root
 pxL <- psf(wL)
 xg1 <- seq(pxL, psf(1), by=(psf(1)-pxL)/100)

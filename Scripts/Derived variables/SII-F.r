@@ -9,11 +9,11 @@ wf <- function(ps)(ps/pe)^(-1/b)
 PLCf <- function(px)1-exp(-(-px/d)^c)
 
 # modified PLC
-PLCfm1 <- function(px, wL){
+PLCfm1 <- Vectorize(function(px, wL){
   pxL <- psf(wL)
   res <- ifelse(px>pxL, PLCf(pxL)-(PLCf(pxL)-PLCf(px))*pkx, PLCf(px))
   return(res)
-}
+})
 
 # P50
 P50f <- Vectorize(function(d){
@@ -53,7 +53,7 @@ pxminfm <- function(w, wL){
 }
 
 # xylem water potential function
-pxf <- function(w, gs, wL){
+pxf <- Vectorize(function(w, gs, wL){
   # modified PLC
   PLCfm <- function(x)PLCf(pxL)-(PLCf(pxL)-PLCf(x))*pkx
   # modified xylem conductance function
@@ -66,7 +66,7 @@ pxf <- function(w, gs, wL){
   pxmin <- pxminfm(w, wL)
   res <- ifelse(pxmin<ps, uniroot(f1, c(pxmin, ps), tol=.Machine$double.eps)$root, ps)
   return(res)
-}
+})
 
 # Af(gs)
 Af <- function(gs)LAI*1/2*(Vcmax+(Km+ca)*gs-Rd-((Vcmax)^2+2*Vcmax*(Km-ca+2*cp)*gs+((ca+Km)*gs+Rd)^2-2*Rd*Vcmax)^(1/2))

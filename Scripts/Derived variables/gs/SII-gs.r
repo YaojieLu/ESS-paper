@@ -31,7 +31,7 @@ pkx <- 0.5
 d <- 5
 
 # Low h
-h3L <- 25
+h3L <- 1
 
 wLL <- subset(data, h3==h3L & d==5, select="wL")[[1]]
 h3 <- h3L
@@ -46,7 +46,7 @@ colnames(resL) <- c("w", "gs")
 write.csv(resL, "Results/SII-gsL.csv", row.names=FALSE)
 
 # High h
-h3H <- 200
+h3H <- 100
 
 wLH <- subset(data, h3==h3H & d==5, select="wL")[[1]]
 h3 <- h3H

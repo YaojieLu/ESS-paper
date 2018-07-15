@@ -41,13 +41,15 @@ fitGym <- nls(Psimin ~ -a*Psi50+b, data=dataGym, start=list(a=-0.4, b=-1),
               control=c(minFactor=1e-5))
 
 # Figure
+Cols <- c("purple", "orange", "darkgreen")
 windows(8*7/4, 6*7/4)
-par(mgp=c(2.2, 1, 0), xaxs="i", yaxs="r", lwd=2, mar=c(4, 4, 0.6, 0.5), mfrow=c(2, 2))
+par(mgp=c(2.2, 1, 0), xaxs="i", yaxs="i", lwd=2, mar=c(4, 4, 0.6, 0.5), mfrow=c(2, 2))
 
 source("Scripts/Figures/g1.r")
+source("Scripts/Figures/pxgs50.r")
+par(yaxs="r")
 source("Scripts/Figures/Slope.r")
 par(yaxs="i")
 source("Scripts/Figures/pxmin.r")
-source("Scripts/Figures/pxgs50.r")
 
 dev.copy2pdf(file = "Figures/Figure 3.pdf")

@@ -1,6 +1,7 @@
 
 options(digits=22)
 source("Scripts/Derived variables/SIII-F.r")
+data <- read.csv("Results/SIII-DV_LAI1.csv")
 
 # Parameterization
 LAI <- 1
@@ -17,7 +18,6 @@ pe <- -1.58*10^-3
 b <- 4.38
 kxmax <- 5
 c <- 2.64
-#d <- 3.54
 h <- l*a*LAI/nZ*p
 h2 <- l*LAI/nZ*p/1000
 
@@ -25,12 +25,12 @@ h2 <- l*LAI/nZ*p/1000
 ca <- 400
 k <- 0.05
 MAP <- 1825
-d <- 4
 gamma <- 1/((MAP/365/k)/1000)*nZ
 
-#data <- read.csv("Results/SIII-DV.csv")
-#wL <- subset(data, d==5, select="wL")[[1]]
-wL <- uniroot(optwLf, c(0.1, 0.3), tol=.Machine$double.eps)$root
+# d
+d <- 5
+
+wL <- subset(data, d==5, select="wL")[[1]]
 pxL <- psf(wL)
 fg1 <- function(ps)ESSg1psf(ps, wL)
 

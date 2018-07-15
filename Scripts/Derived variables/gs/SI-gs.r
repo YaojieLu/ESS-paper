@@ -30,11 +30,11 @@ ca <- 400
 d <- 5
 
 # Low h
-h3L <- 25
+h3L <- 1
 
-wLL <- subset(data, h3==h3L & d==5, select="wL")[[1]]
+#wLL <- subset(data, h3==h3L & d==5, select="wL")[[1]]
 h3 <- h3L
-#wL <- uniroot(ESSBf, c(0.01, 1), tol=.Machine$double.eps)$root
+wLL <- uniroot(ESSBf, c(0.01, 1), tol=.Machine$double.eps)$root
 xL <- seq(wLL, 1, by=(1-wLL)/100)
 yL <- ESSf(xL)
 
@@ -44,11 +44,11 @@ colnames(resL) <- c("w", "gs")
 write.csv(resL, "Results/SI-gsL.csv", row.names=FALSE)
 
 # High h
-h3H <- 200
+h3H <- 100
 
-wLH <- subset(data, h3==h3H & d==5, select="wL")[[1]]
+#wLH <- subset(data, h3==h3H & d==5, select="wL")[[1]]
 h3 <- h3H
-#wL <- uniroot(ESSBf, c(0.01, 1), tol=.Machine$double.eps)$root
+wLH <- uniroot(ESSBf, c(0.01, 1), tol=.Machine$double.eps)$root
 xH <- seq(wLH, 1, by=(1-wLH)/100)
 yH <- ESSf(xH)
 

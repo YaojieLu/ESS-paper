@@ -31,6 +31,7 @@ axis(1, pos=-4, lwd=2, at=c(0))
 axis(2, pos=-10, lwd=2, at=c(0, 50, 100))
 mtext(expression(psi[x]~(MPa)), side=1, line=2, cex=1.3)
 mtext("PLC (%)", side=2, line=2.1, cex=1.3)
+text(-10*0.1, 100*1.04*0.955, "Time = 0", cex=1.3)
 
 box()
 # 2
@@ -47,6 +48,14 @@ axis(1, pos=-4, lwd=2, at=c(0))
 axis(2, pos=-10, lwd=2, at=c(0, 50, 100))
 mtext(expression(psi[x]~(MPa)), side=1, line=2, cex=1.3)
 mtext("PLC (%)", side=2, line=2.1, cex=1.3)
+
+arrows(-0.7, PLCmf(-0.7)*0.8, -0.7, PLCf1(-0.7), length = 0.1, lwd=1, col=Cols[2])
+arrows(-0.7, PLCmf(-0.7)*1.2, -0.7, PLCf1(x), length = 0.1, lwd=1, col=Cols[2])
+arrows(x, PLCf1(x), -10, PLCf1(x), lty=2, lwd=1)
+arrows(x, PLCf1(x), x, -4, lty=2, lwd=1)
+text(x-0.7, PLCf1(x)/2, expression(psi[xL](t)), cex=1.3)
+text((-10-x)/2+x, PLCf1(x)+6.5, expression(PLC[max](t)), cex=1.3)
+text(-10*0.1, 100*1.04*0.955, "Time = t", cex=1.3)
 
 box()
 # 3
@@ -68,9 +77,11 @@ arrows(-1, PLCmf(-1)*1.1, -1, PLCmax, lwd=1, col=Cols[2])
 arrows(-1, PLCmf(-1)*0.9, -1, PLCf1(-1), lwd=1, col=Cols[2])
 arrows(psL, PLCmax, psL, -4, lty=2, lwd=1)
 arrows(psL, PLCmax, -10, PLCmax, lty=2, lwd=1)
-text(psL-0.49, PLCmax/2, expression(psi[xL]), cex=1.3)
-text((-10-psL)/2+psL, PLCmax+6.5, expression(PLC[italic(max)]), cex=1.3)
+text(psL-1.4, PLCmax/2, expression(psi[xL]%==%psi[xL](infinity)), cex=1.3)
+text((-10-psL)/2+psL, PLCmax+6.5, expression(PLC[max]%==%PLC[max](infinity)), cex=1.3)
+text(-10*0.1, 100*1.04*0.955, expression(Time==infinity), cex=1.3)
 
 legend("bottomleft", c("Scenario I", "Scenario II", "Scenario III"), lty=c(1, 1, 1), col=Cols)
 box()
+
 dev.copy2pdf(file = "Figures/Figure 1.pdf")

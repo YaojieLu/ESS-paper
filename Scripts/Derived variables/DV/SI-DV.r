@@ -26,7 +26,7 @@ ca <- 400
 #k <- 0.05
 #MAP <- 1825
 #gamma <- 1/((MAP/365/k)/1000)*nZ
-h3 <- c(1, 25, 100)
+h3 <- c(1, 25, 100, 200)
 d <- seq(1, 15, by=1)
 env <- as.vector(expand.grid(h3, d))
 df <- data.frame(wL=numeric(), P50=numeric(), pxmin=numeric(), pxgs50=numeric(), slope=numeric())

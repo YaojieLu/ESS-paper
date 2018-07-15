@@ -7,37 +7,38 @@ wf <- function(ps)(ps/pe)^(-1/b)
 
 # PLC(px)
 PLCf <- function(px)1-exp(-(-px/d)^c)
+#PLCf <- function(px)1/(1+exp((16+exp(px50)*1092)/25*(px-px50)))
 
 # 50 % PLC loss
 # c
 Psi50fc <- function(c){
   f1 <- function(px)exp(-(-px/d)^c)-0.5
-  res <- uniroot(f1, c(-100, 0), tol=.Machine$double.eps)$root
+  res <- uniroot(f1, c(-200, 0), tol=.Machine$double.eps)$root
   return(res)
 }
 
 # d
-Psi50fd <- function(d){
+Psi50fd <- Vectorize(function(d){
   f1 <- function(px)exp(-(-px/d)^c)-0.5
-  res <- uniroot(f1, c(-100, 0), tol=.Machine$double.eps)$root
+  res <- uniroot(f1, c(-200, 0), tol=.Machine$double.eps)$root
   return(res)
-}
+})
 
 # Inverse d
 InvPsi50fd <- function(px){
   f1 <- function(d)exp(-(-px/d)^c)-0.5
-  res <- uniroot(f1, c(0, 100), tol=.Machine$double.eps)$root
+  res <- uniroot(f1, c(0, 200), tol=.Machine$double.eps)$root
   return(res)
 }
 
 # xylem conductance function
-kxf <- function(px)kxmax*exp(-(-px/d)^c)
+kxf <- function(px)kxmax*(1-PLCf(px))
 
 # minimum xylem water potential function at given w
 pxminf <- function(w){
   ps <- psf(w)
   f1 <- function(px)(ps-px)*h2*kxf(px)
-  res <- optimize(f1, c(-40, 0), tol=.Machine$double.eps, maximum=T)$maximum
+  res <- optimize(f1, c(-200, 0), tol=.Machine$double.eps, maximum=T)$maximum
   return(res)
 }
 
@@ -50,13 +51,13 @@ gsmaxf <- Vectorize(function(w){
 })
 
 # xylem water potential function
-pxf <- function(w, gs){
+pxf <- Vectorize(function(w, gs){
   ps <- psf(w)
   pxmin <- pxminf(w)
   f1 <- function(px)((ps-px)*h2*kxf(px)-h*VPD*gs)^2
   res <- ifelse(pxmin<ps, optimize(f1, c(pxmin, ps), tol=.Machine$double.eps)$minimum, ps)
   return(res)
-}
+})
 
 # Af(gs)
 Af <- function(gs)LAI*1/2*(Vcmax+(Km+ca)*gs-Rd-((Vcmax)^2+2*Vcmax*(Km-ca+2*cp)*gs+((ca+Km)*gs+Rd)^2-2*Rd*Vcmax)^(1/2))
