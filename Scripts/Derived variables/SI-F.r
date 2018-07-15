@@ -24,6 +24,13 @@ Psi50fd <- Vectorize(function(d){
   return(res)
 })
 
+# d
+Psi12fd <- Vectorize(function(d){
+  f1 <- function(px)exp(-(-px/d)^c)-0.88
+  res <- uniroot(f1, c(-200, 0), tol=.Machine$double.eps)$root
+  return(res)
+})
+
 # Inverse d
 InvPsi50fd <- function(px){
   f1 <- function(d)exp(-(-px/d)^c)-0.5

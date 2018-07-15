@@ -3,7 +3,6 @@ options(digits=22)
 source("Scripts/Derived variables/SI-F.r")
 
 # Parameterization
-LAI <- 3
 Vcmax <- 50
 cp <- 30
 Km <- 703
@@ -26,14 +25,16 @@ ca <- 400
 #k <- 0.05
 #MAP <- 1825
 #gamma <- 1/((MAP/365/k)/1000)*nZ
+LAI <- c(1, 3)
 h3 <- c(1, 25, 100, 200)
 d <- seq(1, 15, by=1)
-env <- as.vector(expand.grid(h3, d))
-df <- data.frame(wL=numeric(), P50=numeric(), pxmin=numeric(), pxgs50=numeric(), slope=numeric())
+env <- as.vector(expand.grid(LAI, h3, d))
+df <- data.frame(wL=numeric(), P50=numeric(), P12=numeric(), pxmin=numeric(), pxgs50=numeric(), slope=numeric())
 
 for(i in 1:nrow(env)){
-  h3 <- env[i, 1]
-  d <- env[i, 2]
+  LAI <- env[i, 1]
+  h3 <- env[i, 2]
+  d <- env[i, 3]
   
   wL <- uniroot(ESSBf, c(0.01, 1), tol=.Machine$double.eps)$root
   g1 <- ESSf(1)
@@ -43,11 +44,12 @@ for(i in 1:nrow(env)){
   
   df[i, 1] <- wL
   df[i, 2] <- Psi50fd(d)
-  df[i, 3] <- pxf(wL, ESSf(wL))
-  df[i, 4] <- pxf(w50, ESSf(w50))
-  df[i, 5] <- (ESSpxpsf(psL)-ESSpxpsf(pe))/(psL-pe)
+  df[i, 3] <- Psi12fd(d)
+  df[i, 4] <- pxf(wL, ESSf(wL))
+  df[i, 5] <- pxf(w50, ESSf(w50))
+  df[i, 6] <- (ESSpxpsf(psL)-ESSpxpsf(pe))/(psL-pe)
 }
 
 res <- cbind(env, df)
-colnames(res) <- c("h3", "d", "wL", "P50", "pxmin", "pxgs50", "slope")
+colnames(res) <- c("LAI", "h3", "d", "wL", "P50", "P12", "pxmin", "pxgs50", "slope")
 write.csv(res, "Results/SI-DV.csv", row.names = FALSE)
