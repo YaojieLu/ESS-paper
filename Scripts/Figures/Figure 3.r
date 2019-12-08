@@ -1,55 +1,59 @@
 
-library(nlme)
-library(doBy)
+source("Scripts/Figures/Figure-F.r")
+
+# Initialize
+pe <- -1.58*10^-3
+b <- 4.38
 
 # Data
-datag1SIL <-  read.csv("Results/SI-g1L.csv")
-datag1SIH <-  read.csv("Results/SI-g1H.csv")
-datag1SIII <- read.csv("Results/SIII-g1.csv")
-dataDVSI <- read.csv("Results/SI-DV.csv")
-dataDVSII <- read.csv("Results/SII-DV.csv")
-dataDVSIII <- read.csv("Results/SIII-DV.csv")
-# a
-dataa <- read.csv("Data/Zhou 2014.csv")
-# b
-rawdatab <- read.csv("Data/Martinez-vilalta 2014.csv")
-datab <- data.frame(P50=rawdatab$P50.Mpa, sigma=rawdatab$sigma)
-datab <- datab[order(datab$P50), ]
-# c
-datac <- read.csv("Data/Choat2012.csv")
-dataAng <- subset(datac, Type=="Angiosperm", select=c("Psi50", "Psimin"))
-dataAng <- dataAng[order(dataAng$Psi50), ]
-dataGym <- subset(datac, Type=="Gymnosperm", select=c("Psi50", "Psimin"))
-dataGym <- dataGym[order(dataGym$Psi50), ]
-# V
-dataDVSV <- read.csv("Results/SV-DV.csv")
-datag1SV <- read.csv("Results/SV-g1.csv")
+dataSIL   <- read.csv("Results/SI-gsL.csv")
+dataSIH   <- read.csv("Results/SI-gsH.csv")
+dataSIIL  <- read.csv("Results/SII-gsL.csv")
+dataSIIH  <- read.csv("Results/SII-gsH.csv")
+dataSIII <- read.csv("Results/SIII-gs.csv")
 
-# Regression
-# a
-fits <- nlsList(g1 ~ a*exp(b*LWP)|Species, start=list(a=10, b=0.5), data=dataa)
-rangefun <- function(x)setNames(range(x), c("min", "max"))
-ran <- summaryBy(LWP ~ Species, FUN=rangefun, data=dataa)
-pars <- cbind(ran, as.data.frame(coef(fits)))
-# b
-fit <- nls(sigma ~ a*(-P50)^b+c, data=datab, start=list(a=0.8459, b=0.1261, c=-0.1320),
-           control=c(minFactor=1e-5))
-# c
-fitAng <- nls(Psimin ~ -a*Psi50+b, data=dataAng, start=list(a=-0.4, b=-1),
-              control=c(minFactor=1e-5))
-fitGym <- nls(Psimin ~ -a*Psi50+b, data=dataGym, start=list(a=-0.4, b=-1),
-              control=c(minFactor=1e-5))
-
-# Figure
+# Figures
 Cols <- c("purple", "orange", "darkgreen")
-windows(8*7/4, 6*7/4)
-par(mgp=c(2.2, 1, 0), xaxs="i", yaxs="i", lwd=2, mar=c(4, 4, 0.6, 0.5), mfrow=c(2, 2))
+windows(16, 6)
+par(mgp=c(2.2, 1, 0), xaxs="i", yaxs="i", lwd=2, mar=c(3.3, 3.5, 0.9, 0.7), mfrow=c(1, 2))
+# gs - w
+plot(0, 0, type="n", xaxt="n", yaxt="n", xlab=NA, ylab=NA,
+     xlim=c(0, 1), ylim=c(0, 0.4), cex.lab=1.3)
 
-source("Scripts/Figures/g1.r")
-source("Scripts/Figures/pxgs50.r")
-par(yaxs="r")
-source("Scripts/Figures/Slope.r")
-par(yaxs="i")
-source("Scripts/Figures/pxmin.r")
+points(dataSIL, type="l", col=Cols[1])
+points(dataSIH, type="l", col=Cols[1], lty=2)
+points(dataSIIL, type="l", col=Cols[2])
+points(dataSIIH, type="l", col=Cols[2], lty=2)
+points(dataSIII, type="l", col=Cols[3])
 
-dev.copy2pdf(file = "Figures/Figure 3.pdf")
+axis(1, xlim=c(0, 1), pos=0, lwd=2)
+mtext(expression(italic(s)),side=1, line=2, cex=1.3)
+axis(2, ylim=c(0, 0.4), pos=0, lwd=2)
+mtext(expression(italic(g[s])~(mol~m^-2~s^-1)),side=2,line=1.8, cex=1.3)
+text(1*0.035, 0.4*0.955, "a", cex=1.3)
+box()
+
+# gs - ps
+plot(0, 0, type="n", xaxt="n", yaxt="n", xlab=NA, ylab=NA,
+     xlim=c(-10, 0), ylim=c(0, 0.4), cex.lab=1.3)
+
+points(psf(dataSIL[[1]]), dataSIL[[2]], type="l", col=Cols[1])
+points(psf(dataSIH[[1]]), dataSIH[[2]], type="l", col=Cols[1], lty=2)
+points(psf(dataSIIL[[1]]), dataSIIL[[2]], type="l", col=Cols[2])
+points(psf(dataSIIH[[1]]), dataSIIH[[2]], type="l", col=Cols[2], lty=2)
+points(psf(dataSIII[[1]]), dataSIII[[2]], type="l", col=Cols[3])
+
+axis(1, xlim=c(-10, 0), pos=0, lwd=2)
+mtext(expression(italic(psi[s])~(MPa)),side=1, line=2.3, cex=1.3)
+axis(2, ylim=c(0, 0.4), pos=-10, lwd=2)
+mtext(expression(italic(g[s])~(mol~m^-2~s^-1)),side=2,line=1.8, cex=1.3)
+text(-10*0.035, 0.4*0.955, "b", cex=1.3)
+box()
+
+legend("topleft", c(expression(paste(italic(p[k]==100), ",  ", beta==1)),
+                    expression(paste(italic(p[k]==100), ",  ", beta==100)),
+                    expression(paste(italic(p[k]==50), ",  ", beta==1)),
+                    expression(paste(italic(p[k]==50), ",  ", beta==100)),
+                    expression(paste(italic(p[k]==0)))), lty=c(1, 2, 1, 2, 1), col=c("purple", "purple", "orange", "orange", "darkgreen"))
+
+dev.copy2pdf(file = "Figures/Figure 2.pdf")

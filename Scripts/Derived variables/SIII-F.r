@@ -59,7 +59,7 @@ averAirelf <- function(wLi, wLr){
   gswLfi <- Vectorize(function(w)ifelse(w<wLi, 0, gswLf(w, wLi)))
   
   Evf <- function(w)h*VPD*gswLfr(w)
-  Lf <- function(w)Evf(w)+w/100
+  Lf <- function(w)Evf(w)+w/1000#100
   rLf <- function(w)1/Lf(w)
   integralrLf <- Vectorize(function(w)integrate(rLf, w, 1, rel.tol=.Machine$double.eps^0.5)$value)
   fnoc <- function(w)1/Lf(w)*exp(-gamma*w-k*integralrLf(w))
@@ -70,6 +70,16 @@ averAirelf <- function(wLi, wLr){
   return(res)
 }
 
+# PDF
+pdff <- function(w, wL){
+  gswf <- Vectorize(function(w)ifelse(w<wL, 0, gswLf(w, wL)))
+  Evf <- function(w)h*VPD*gswf(w)
+  Lf <- function(w)Evf(w)+w/1000#100
+  rLf <- function(w)1/Lf(w)
+  integralrLf <- Vectorize(function(w)integrate(rLf, w, 1, rel.tol=.Machine$double.eps^0.5)$value)
+  res <- 1/Lf(w)*exp(-gamma*w-k*integralrLf(w))
+  return(res)
+}
 # Averages
 averf <- function(wL){
   
@@ -94,7 +104,7 @@ optwLf <- Vectorize(function(wLr){
   averAirelf1 <- Vectorize(function(wLi)averAirelf(wLi, wLr))
   optwLi <- optimize(averAirelf1, c(0.1, 0.3), tol=.Machine$double.eps^0.3, maximum=T)
   res <- optwLi$maximum-wLr
-  #message(wLr, " ", optwLi$maximum)
+  message(wLr, " ", optwLi$maximum)
   return(res)
 })
 

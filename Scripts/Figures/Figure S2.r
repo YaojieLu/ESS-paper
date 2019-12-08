@@ -54,9 +54,9 @@ curve(f, 0, 1, lty = 2, add = T)
 axis(1, xlim=c(0, 1), pos=0, lwd=2)
 mtext(expression(italic(s)),side=1, line=2, cex=1.3)
 axis(2, ylim=c(0, 0.4), pos=0, lwd=2)
-mtext(expression(italic(E~or~L~(day^-1))),side=2,line=1.8, cex=1.3)
+mtext(expression(italic(E~or~DI~(day^-1))),side=2,line=1.8, cex=1.3)
 box()
 
-legend("topleft", c(expression(italic(E)), expression(italic(L))), lty=c(1, 2))
+legend("topleft", c(expression(italic(E)), expression(italic(DI))), lty=c(1, 2))
 
 dev.copy2pdf(file = "Figures/Figure S2.pdf")

@@ -1,59 +1,32 @@
 
-source("Scripts/Figures/Figure-F.r")
-
-# Initialize
-pe <- -1.58*10^-3
-b <- 4.38
+library(plotly)
 
 # Data
-dataSIL   <- read.csv("Results/SI-gsL.csv")
-dataSIH   <- read.csv("Results/SI-gsH.csv")
-dataSIIL  <- read.csv("Results/SII-gsL.csv")
-dataSIIH  <- read.csv("Results/SII-gsH.csv")
-dataSIII <- read.csv("Results/SIII-gs.csv")
+d1   <- read.csv("Results/SIII-fp2.csv")
+x <- seq(-10, -1, by = 0.5)
+y <- seq(-10, -1, by = 0.5)
+n <- length(x)
+z1 <- t(matrix(d1[, 3],nrow = n, ncol = n))
+diag1 <- diag(z1)
+z2 <- matrix(diag1, nrow = 1, ncol = n)
+z2 <- z2[rep(1:nrow(z2), times = n), ]
 
-# Figures
-Cols <- c("purple", "orange", "darkgreen")
-windows(16, 6)
-par(mgp=c(2.2, 1, 0), xaxs="i", yaxs="i", lwd=2, mar=c(3.3, 3.5, 0.9, 0.7), mfrow=c(1, 2))
-# gs - w
-plot(0, 0, type="n", xaxt="n", yaxt="n", xlab=NA, ylab=NA,
-     xlim=c(0, 1), ylim=c(0, 0.4), cex.lab=1.3)
+d2   <- read.csv("Results/SIII-fp1.csv")
 
-points(dataSIL, type="l", col=Cols[1])
-points(dataSIH, type="l", col=Cols[1], lty=2)
-points(dataSIIL, type="l", col=Cols[2])
-points(dataSIIH, type="l", col=Cols[2], lty=2)
-points(dataSIII, type="l", col=Cols[3])
-
-axis(1, xlim=c(0, 1), pos=0, lwd=2)
-mtext(expression(italic(s)),side=1, line=2, cex=1.3)
-axis(2, ylim=c(0, 0.4), pos=0, lwd=2)
-mtext(expression(italic(g[s])~(mol~m^-2~s^-1)),side=2,line=1.8, cex=1.3)
-text(1*0.035, 0.4*0.955, "a", cex=1.3)
-box()
-
-# gs - ps
-plot(0, 0, type="n", xaxt="n", yaxt="n", xlab=NA, ylab=NA,
-     xlim=c(-10, 0), ylim=c(0, 0.4), cex.lab=1.3)
-
-points(psf(dataSIL[[1]]), dataSIL[[2]], type="l", col=Cols[1])
-points(psf(dataSIH[[1]]), dataSIH[[2]], type="l", col=Cols[1], lty=2)
-points(psf(dataSIIL[[1]]), dataSIIL[[2]], type="l", col=Cols[2])
-points(psf(dataSIIH[[1]]), dataSIIH[[2]], type="l", col=Cols[2], lty=2)
-points(psf(dataSIII[[1]]), dataSIII[[2]], type="l", col=Cols[3])
-
-axis(1, xlim=c(-10, 0), pos=0, lwd=2)
-mtext(expression(italic(psi[s])~(MPa)),side=1, line=2.3, cex=1.3)
-axis(2, ylim=c(0, 0.4), pos=-10, lwd=2)
-mtext(expression(italic(g[s])~(mol~m^-2~s^-1)),side=2,line=1.8, cex=1.3)
-text(-10*0.035, 0.4*0.955, "b", cex=1.3)
-box()
-
-legend("topleft", c(expression(paste(italic(p[k[x]]==100), ",  ", beta==1)),
-                    expression(paste(italic(p[k[x]]==100), ",  ", beta==100)),
-                    expression(paste(italic(p[k[x]]==50), ",  ", beta==1)),
-                    expression(paste(italic(p[k[x]]==50), ",  ", beta==100)),
-                    expression(paste(italic(p[k[x]]==0)))), lty=c(1, 2, 1, 2, 1), col=c("purple", "purple", "orange", "orange", "darkgreen"))
-
-dev.copy2pdf(file = "Figures/Figure 2.pdf")
+# Figure
+# Color
+color1 <- rep(0, length(z1))
+dim(color1) <- dim(z1)
+color2 <- rep(1, length(z2))
+dim(color2) <- dim(z2)
+# Plotting
+p <- plot_ly(colors = c('grey', 'black')) %>%
+  add_surface(x = x, y = y, z = z1,
+              opacity = 0.8, surfacecolor = color1,
+              cauto = F, cmax = 1, cmin = 0)
+p <-  add_surface(p,
+                  x = x, y = y, z = z2,
+                  opacity = 1, surfacecolor = color2,
+                  cauto = F, cmax = 1, cmin = 0) %>%
+  hide_colorbar()
+p

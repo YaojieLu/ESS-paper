@@ -18,3 +18,6 @@ pxfI <- Vectorize(function(w, gs){
   res <- ifelse(pxmin<ps, optimize(f1, c(pxmin, ps), tol=.Machine$double.eps)$minimum, ps)
   return(res)
 })
+
+# PLC(px)
+PLCf <- function(px)1-exp(-(-px/d)^c)
